@@ -1,0 +1,4 @@
+export const MongoDBConstants = {
+  MONGO_DATA_BASE_CONNECTION: 'DATABASE_CONNECTION',
+  FILE_MODEL: 'FILE_MODEL',
+};

@@ -1,15 +1,17 @@
 import { Logger } from '@nestjs/common';
-import { CommandHandler, EventPublisher, ICommandHandler } from '@nestjs/cqrs';
+import { CommandHandler, EventBus, ICommandHandler } from '@nestjs/cqrs';
 import { TransformFileCommand } from '../impl/transform-file.command';
 import * as XLSX from 'xlsx';
-import * as fs from 'fs';
 import { readSheet } from 'src/files/utils/xlsx.utils';
+import { TransformedFileEvent } from 'src/files/application/events/impl/transformed-file.event';
+import { FileErrorDto } from 'src/files/domain/dtos/file.dto';
+import { FileErrorFoundEvent } from '../../events/impl/file-error-found.event';
 
 @CommandHandler(TransformFileCommand)
 export class TransformFileHandler
   implements ICommandHandler<TransformFileCommand>
 {
-  constructor(private readonly publisher: EventPublisher) {}
+  constructor(private readonly eventBus: EventBus) {}
   private readonly logger = new Logger(TransformFileCommand.name);
   async execute(command: TransformFileCommand) {
     this.logger.log(`[${this.execute.name}] :: INIT`);
@@ -25,28 +27,28 @@ export class TransformFileHandler
       worksheet[cellAddress].w = formatJson[columns[i]].name;
     }
     const data = XLSX.utils.sheet_to_json(worksheet, {});
-    const filterded = data.filter((row) => {
+    const filtered = data.filter((row: any) => {
       let result = true;
       columns.forEach((c) => {
         if (typeof row[formatJson[c].name] !== formatJson[c].type) {
           result = false;
-          //Create event error
+          const error: FileErrorDto = {
+            error: `Invalid format in ceil ${c}${
+              row.__rowNum__ + 1
+            }, expected: ${formatJson[c].type}`,
+            column: c,
+            row: row.__rowNum__ + 1,
+          };
+          this.eventBus.publish(new FileErrorFoundEvent(processId, error));
+          this.logger.error(`[execute] :: ERROR: ${error.error}`);
         }
       });
       return result;
     });
-    fs.writeFile(
-      `${process.env.PWD}${process.env.FILES_PATH}/${file.originalname}`,
-      JSON.stringify(filterded),
-      (err) => {
-        if (err) {
-          console.error(err);
-          return;
-        }
-        console.log('Archivo escrito con éxito');
-      },
-    );
     this.logger.log(`[${this.execute.name}] :: FINISH ::`);
-    return filterded;
+    this.eventBus.publish(
+      new TransformedFileEvent({ ...file, processId }, filtered),
+    );
+    return filtered;
   }
 }

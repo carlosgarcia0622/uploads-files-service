@@ -1,5 +1,5 @@
 import { ICommand } from '@nestjs/cqrs';
-import { fileDto } from 'src/files/dtos/file.dto';
+import { fileDto } from 'src/files/domain/dtos/file.dto';
 
 export class TransformFileCommand implements ICommand {
   constructor(
