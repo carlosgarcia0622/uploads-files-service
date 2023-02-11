@@ -24,4 +24,8 @@ export class MongoFileRepository implements IFileRepository {
       file.save();
     }
   }
+
+  async findByProcessId(processId: string): Promise<fileDto> {
+    return this.fileModel.findOne({ processId });
+  }
 }

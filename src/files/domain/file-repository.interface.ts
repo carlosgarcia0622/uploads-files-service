@@ -4,4 +4,5 @@ import { fileDto, FileErrorDto } from './dtos/file.dto';
 export interface IFileRepository {
   create(file: fileDto): Promise<File>;
   addError(processId, error: FileErrorDto): Promise<void>;
+  findByProcessId(processId: string): Promise<fileDto>;
 }
