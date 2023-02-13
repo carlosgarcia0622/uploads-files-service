@@ -1,7 +1,15 @@
-import { Controller, Get, Logger, Param, Query } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Logger,
+  Param,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
-import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiHeaders, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { GetProcessStatusQuery } from 'src/files/application/queries/impl/get-process-status.query';
+import { AppKeyGuard } from 'src/shared/infraestructure/auth/AppKeyGuard';
 import { GetFileStatusRequest } from './get-file-status.request';
 
 @Controller('files')
@@ -11,6 +19,8 @@ export class GetFileStatusController {
   constructor(private readonly queryBus: QueryBus) {}
 
   @ApiResponse({ status: 200, description: 'Upload process status' })
+  @ApiHeaders([{ name: 'x-app-key', description: 'APP KEY' }])
+  @UseGuards(AppKeyGuard)
   @Get('/:processId')
   async getProcessStatus(
     @Param('processId') processId: string,

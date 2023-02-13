@@ -8,10 +8,11 @@ import {
   HttpStatus,
   Logger,
   UsePipes,
+  UseGuards,
 } from '@nestjs/common';
 import { CommandBus, EventBus } from '@nestjs/cqrs';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { ApiConsumes, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiConsumes, ApiHeaders, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { TransformFileCommand } from '../../application/commands/impl/transform-file.command';
 import { UploadFilesRequest } from './upload-files.request';
 import { v4 as uuidv4 } from 'uuid';
@@ -19,6 +20,7 @@ import { fileDto } from '../../domain/dtos/file.dto';
 import { UploadedFileEvent } from '../../application/commands/impl/uploaded-file.command';
 import { UploadFilesValidator } from './upload-files-validator.pipe';
 import { ResponseError, UploadFilesResponse } from './upload-files.response';
+import { AppKeyGuard } from 'src/shared/infraestructure/auth/AppKeyGuard';
 @Controller('files')
 @ApiTags('Files')
 export class UploadFilesController {
@@ -44,6 +46,8 @@ export class UploadFilesController {
     description: 'Bad request',
     type: ResponseError,
   })
+  @ApiHeaders([{ name: 'x-app-key', description: 'APP KEY' }])
+  @UseGuards(AppKeyGuard)
   @UseInterceptors(FileInterceptor('file'))
   @ApiConsumes('multipart/form-data')
   @Post('/upload')
