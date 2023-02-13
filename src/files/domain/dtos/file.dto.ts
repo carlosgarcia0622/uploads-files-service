@@ -1,7 +1,6 @@
 export class FileErrorDto {
   error: string;
-  column: string;
-  row: string;
+  cell?: string;
 }
 export class fileDto {
   readonly processId: string;

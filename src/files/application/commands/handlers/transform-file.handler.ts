@@ -1,11 +1,13 @@
 import { Logger } from '@nestjs/common';
 import { CommandHandler, EventBus, ICommandHandler } from '@nestjs/cqrs';
 import { TransformFileCommand } from '../impl/transform-file.command';
-import * as XLSX from 'xlsx';
-import { readSheet } from 'src/files/utils/xlsx.utils';
 import { TransformedFileEvent } from 'src/files/application/events/impl/transformed-file.event';
 import { FileErrorDto } from 'src/files/domain/dtos/file.dto';
 import { FileErrorFoundEvent } from '../../events/impl/file-error-found.event';
+import * as Excel from 'exceljs';
+// import * as excel from 'xlsx-parse-stream';
+// import * as request from 'superagent';
+// import * as through from 'through2';
 
 @CommandHandler(TransformFileCommand)
 export class TransformFileHandler
@@ -16,39 +18,58 @@ export class TransformFileHandler
   async execute(command: TransformFileCommand) {
     this.logger.log(`[${this.execute.name}] :: INIT`);
     const { processId, file, format } = command;
-    console.log(typeof format);
-    const formatJson = JSON.parse(format);
-    const columns = Object.keys(formatJson);
-    const workbook = readSheet(file.path);
-    // const workbook = XLSX.readFile(file.path, { cellDates: true });
-    const worksheet = workbook.Sheets[workbook.SheetNames[0]];
-    for (let i = 0; i < columns.length; i++) {
-      const cellAddress = `${columns[i]}${1}`;
-      worksheet[cellAddress].w = formatJson[columns[i]].name;
-    }
-    const data = XLSX.utils.sheet_to_json(worksheet, {});
-    const filtered = data.filter((row: any) => {
-      let result = true;
-      columns.forEach((c) => {
-        if (typeof row[formatJson[c].name] !== formatJson[c].type) {
-          result = false;
-          const error: FileErrorDto = {
-            error: `Invalid format in ceil ${c}${
-              row.__rowNum__ + 1
-            }, expected: ${formatJson[c].type}`,
-            column: c,
-            row: row.__rowNum__ + 1,
-          };
-          this.eventBus.publish(new FileErrorFoundEvent(processId, error));
-          this.logger.error(`[execute] :: ERROR: ${error.error}`);
-        }
-      });
-      return result;
+    const workbook = new Excel.Workbook();
+    await workbook.xlsx.readFile(file.path);
+    const worksheet = workbook.getWorksheet(1);
+    const data = [];
+    const headers = {};
+    worksheet.eachRow((row, rowNumber) => {
+      if (rowNumber === 1) {
+        row.eachCell((cell, colNumber) => {
+          const column = this.columnToLetter(colNumber);
+          if (format[column]) {
+            headers[colNumber] = {
+              name: format[column].name,
+              type:
+                format[column].type === 'date' ? 'object' : format[column].type,
+              column,
+            };
+          }
+        });
+      } else {
+        const rowData = {};
+        row.eachCell((cell, colNumber) => {
+          const header = headers[colNumber];
+          if (header) {
+            if (header.type !== typeof cell.value) {
+              console.log('error');
+              const error: FileErrorDto = {
+                error: `Invalid format in ceil ${cell.address}, expected: ${header.type}`,
+                cell: cell.address,
+              };
+              this.eventBus.publish(new FileErrorFoundEvent(processId, error));
+            } else {
+              rowData[header.name] = cell.value;
+            }
+          }
+        });
+        data.push(rowData);
+      }
     });
-    this.logger.log(`[${this.execute.name}] :: FINISH ::`);
     this.eventBus.publish(
-      new TransformedFileEvent({ ...file, processId }, filtered),
+      new TransformedFileEvent({ ...file, processId }, data),
     );
-    return filtered;
+    return data;
+  }
+
+  private columnToLetter(column) {
+    let temp,
+      letter = '';
+    while (column > 0) {
+      temp = (column - 1) % 26;
+      letter = String.fromCharCode(temp + 65) + letter;
+      column = (column - temp - 1) / 26;
+    }
+    return letter;
   }
 }

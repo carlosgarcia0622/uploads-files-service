@@ -10,7 +10,11 @@ export class GetProcessStatusHandler
   constructor(private readonly repository: IFileRepository) {}
 
   execute(query: GetProcessStatusQuery): Promise<fileDto> {
-    const { processId } = query;
-    return this.repository.findByProcessId(processId);
+    const { processId, page, limit } = query;
+    return this.repository.findByProcessId(
+      processId,
+      Number(page),
+      Number(limit),
+    );
   }
 }

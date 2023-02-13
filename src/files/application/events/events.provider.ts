@@ -1,6 +1,7 @@
 import { MongoFileRepository } from 'src/files/infraestructure/database/mongodb/mongo-file.repository';
 import { FileErrorFoundHandler } from './handlers/file-error-found.handler';
 import { UploadedFileHandler } from '../commands/handlers/uploaded-file.handlers';
+import { TransformedFileHandler } from './handlers/transformed-file.handler';
 
 export const EventProviders = [
   {
@@ -12,5 +13,10 @@ export const EventProviders = [
     provide: FileErrorFoundHandler,
     inject: [MongoFileRepository],
     useFactory: (repository) => new FileErrorFoundHandler(repository),
+  },
+  {
+    provide: TransformedFileHandler,
+    inject: [MongoFileRepository],
+    useFactory: (repository) => new TransformedFileHandler(repository),
   },
 ];

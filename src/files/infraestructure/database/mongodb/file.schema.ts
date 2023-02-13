@@ -25,8 +25,7 @@ const schemaDefinition = {
     {
       type: {
         error: String,
-        column: String,
-        row: String,
+        cell: String,
       },
     },
   ],

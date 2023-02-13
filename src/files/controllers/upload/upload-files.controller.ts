@@ -7,6 +7,7 @@ import {
   ParseFilePipeBuilder,
   HttpStatus,
   Logger,
+  UsePipes,
 } from '@nestjs/common';
 import { CommandBus, EventBus } from '@nestjs/cqrs';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -16,6 +17,8 @@ import { UploadFilesRequest } from './upload-files.request';
 import { v4 as uuidv4 } from 'uuid';
 import { fileDto } from '../../domain/dtos/file.dto';
 import { UploadedFileEvent } from '../../application/commands/impl/uploaded-file.command';
+import { UploadFilesValidator } from './upload-files-validator.pipe';
+import { ResponseError, UploadFilesResponse } from './upload-files.response';
 @Controller('files')
 @ApiTags('Files')
 export class UploadFilesController {
@@ -25,8 +28,22 @@ export class UploadFilesController {
     private readonly eventBus: EventBus,
   ) {}
 
-  @ApiResponse({ status: 201, description: 'Process id' })
-  @ApiResponse({ status: 422, description: 'Invalid file type' })
+  @UsePipes(new UploadFilesValidator())
+  @ApiResponse({
+    status: 201,
+    description: 'Upload process started',
+    type: UploadFilesResponse,
+  })
+  @ApiResponse({
+    status: 422,
+    description: 'Invalid file type',
+    type: ResponseError,
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Bad request',
+    type: ResponseError,
+  })
   @UseInterceptors(FileInterceptor('file'))
   @ApiConsumes('multipart/form-data')
   @Post('/upload')
@@ -34,7 +51,7 @@ export class UploadFilesController {
     @Body() body: UploadFilesRequest,
     @UploadedFile(
       new ParseFilePipeBuilder()
-        .addFileTypeValidator({ fileType: 'sheet' }) //TODO Improve file validation
+        .addFileTypeValidator({ fileType: 'sheet' })
         .build({
           fileIsRequired: true,
           errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY,
@@ -43,9 +60,8 @@ export class UploadFilesController {
     file: fileDto,
   ) {
     this.logger.log(`[${this.upload.name}] INIT :: }`);
-    console.log(file);
-    console.log(body.format);
     const processId = uuidv4();
+    const response = new UploadFilesResponse();
     await this.commandBus.execute(
       new UploadedFileEvent({ ...file, processId }),
     );
@@ -53,6 +69,8 @@ export class UploadFilesController {
       new TransformFileCommand(processId, file, body.format),
     );
     this.logger.log(`[${this.upload.name}] FINISH ::`);
-    return processId;
+    response.processId = processId;
+    response.statusCode = 201;
+    return response;
   }
 }

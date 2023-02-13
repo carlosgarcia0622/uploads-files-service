@@ -1,6 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { IsNotEmpty, IsString } from 'class-validator';
 
 export class UploadFilesRequest {
+  @IsString()
+  @IsNotEmpty()
   @ApiProperty({
     type: 'string',
     description: 'JSON with the format',
