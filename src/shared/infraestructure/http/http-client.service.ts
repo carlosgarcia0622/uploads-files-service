@@ -13,7 +13,7 @@ export class HttpClient implements IHttpClient {
     const { data } = await firstValueFrom(
       this.httpService.post(url, body, options).pipe(
         catchError(async (error) => {
-          this.logger.error(`HTTP POST :: ERROR: `);
+          this.logger.error(`HTTP POST :: ERROR: ${error}`);
           throw new BadGatewayException({
             message: `Bad gateway error: ${error}`,
             error,
