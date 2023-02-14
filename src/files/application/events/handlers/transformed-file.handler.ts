@@ -37,6 +37,6 @@ export class TransformedFileHandler
     });
     this.repository.updateStatus(processId, fileStatusConstants.DONE);
     const body = { processId, status: fileStatusConstants.DONE };
-    this.httpService.post(callbackUrl, body);
+    //this.httpService.post(callbackUrl, body);
   }
 }
