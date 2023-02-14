@@ -9,7 +9,7 @@ import {
 import { QueryBus } from '@nestjs/cqrs';
 import { ApiHeaders, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { GetProcessStatusQuery } from 'src/files/application/queries/impl/get-process-status.query';
-import { AppKeyGuard } from 'src/shared/infraestructure/auth/AppKeyGuard';
+import { ApiKeyGuard } from 'src/shared/infraestructure/auth/api-key.guard';
 import { ResponseError } from 'src/shared/infraestructure/http/http-error.response';
 import { GetFileStatusRequest } from './get-file-status.request';
 import { GetFileStatusResponse } from './get-file-status.response';
@@ -36,7 +36,7 @@ export class GetFileStatusController {
     type: ResponseError,
   })
   @ApiHeaders([{ name: 'x-app-key', description: 'APP KEY' }])
-  @UseGuards(AppKeyGuard)
+  @UseGuards(ApiKeyGuard)
   @Get('/:processId')
   async getProcessStatus(
     @Param('processId') processId: string,

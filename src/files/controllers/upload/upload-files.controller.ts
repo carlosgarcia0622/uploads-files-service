@@ -21,7 +21,7 @@ import { fileDto } from '../../domain/dtos/file.dto';
 import { UploadedFileEvent } from '../../application/commands/impl/uploaded-file.command';
 import { UploadFilesValidator } from './upload-files-validator.pipe';
 import { UploadFilesResponse } from './upload-files.response';
-import { AppKeyGuard } from 'src/shared/infraestructure/auth/AppKeyGuard';
+import { ApiKeyGuard } from 'src/shared/infraestructure/auth/api-key.guard';
 import { HttpExceptionFilter } from 'src/shared/infraestructure/http/http-exception-filters';
 import { ResponseError } from 'src/shared/infraestructure/http/http-error.response';
 @Controller('files')
@@ -56,7 +56,7 @@ export class UploadFilesController {
     type: ResponseError,
   })
   @ApiHeaders([{ name: 'x-app-key', description: 'APP KEY' }])
-  @UseGuards(AppKeyGuard)
+  @UseGuards(ApiKeyGuard)
   @UseInterceptors(FileInterceptor('file'))
   @ApiConsumes('multipart/form-data')
   @Post('/upload')

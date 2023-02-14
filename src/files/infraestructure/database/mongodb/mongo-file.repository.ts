@@ -44,7 +44,6 @@ export class MongoFileRepository implements IFileRepository {
       },
     };
     data.push(match);
-    //return this.fileModel.findOne({ processId });
     const file = await this.fileModel.aggregate([match, project]);
     if (file && file.length) return file[0];
     return {};

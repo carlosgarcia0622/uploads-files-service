@@ -4,6 +4,7 @@ import { UploadedFileHandler } from '../commands/handlers/uploaded-file.handlers
 import { TransformedFileHandler } from './handlers/transformed-file.handler';
 import { HttpClient } from 'src/shared/infraestructure/http/http-client.service';
 import { HttpService } from '@nestjs/axios';
+import { FsFileWriter } from 'src/files/infraestructure/fs-file-writer';
 
 export const EventProviders = [
   {
@@ -20,6 +21,10 @@ export const EventProviders = [
     provide: TransformedFileHandler,
     inject: [MongoFileRepository, HttpService],
     useFactory: (repository, httpService) =>
-      new TransformedFileHandler(repository, new HttpClient(httpService)),
+      new TransformedFileHandler(
+        repository,
+        new FsFileWriter(repository),
+        new HttpClient(httpService),
+      ),
   },
 ];

@@ -7,8 +7,8 @@ import {
 } from '@nestjs/common';
 
 @Injectable()
-export class AppKeyGuard implements CanActivate {
-  private readonly logger: Logger = new Logger(AppKeyGuard.name);
+export class ApiKeyGuard implements CanActivate {
+  private readonly logger: Logger = new Logger(ApiKeyGuard.name);
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const response = true;
