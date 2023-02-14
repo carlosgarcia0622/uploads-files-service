@@ -5,7 +5,6 @@ import { TransformedFileEvent } from 'src/files/application/events/impl/transfor
 import { FileErrorDto } from 'src/files/domain/dtos/file.dto';
 import { FileErrorFoundEvent } from '../../events/impl/file-error-found.event';
 import * as Excel from 'exceljs';
-import * as XLSX from 'xlsx';
 
 @CommandHandler(TransformFileCommand)
 export class TransformFileHandler
