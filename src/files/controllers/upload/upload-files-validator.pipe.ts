@@ -26,7 +26,7 @@ export class UploadFilesValidator implements PipeTransform<any> {
         );
       }
       return value;
-    } else if (value && value.format) {
+    } else if (value && (value.format || value.callbackUrl)) {
       let format;
       let error;
       try {
@@ -52,6 +52,13 @@ export class UploadFilesValidator implements PipeTransform<any> {
         }
         if (error) {
           throw new BadRequestException(error);
+        }
+      }
+      if (value.callbackUrl) {
+        try {
+          new URL(value.callbackUrl);
+        } catch (error) {
+          throw new BadRequestException(`CallbackUrl must be a valid url`);
         }
       }
       value.format = format;

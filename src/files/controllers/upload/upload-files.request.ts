@@ -16,4 +16,8 @@ export class UploadFilesRequest {
 
   @ApiProperty({ format: 'binary', type: 'string' })
   file: string;
+
+  //@IsUrl()
+  @ApiProperty({ type: 'string' })
+  callbackUrl: string;
 }

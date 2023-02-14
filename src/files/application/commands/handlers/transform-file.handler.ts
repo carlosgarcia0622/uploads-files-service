@@ -5,9 +5,7 @@ import { TransformedFileEvent } from 'src/files/application/events/impl/transfor
 import { FileErrorDto } from 'src/files/domain/dtos/file.dto';
 import { FileErrorFoundEvent } from '../../events/impl/file-error-found.event';
 import * as Excel from 'exceljs';
-// import * as excel from 'xlsx-parse-stream';
-// import * as request from 'superagent';
-// import * as through from 'through2';
+import { createReadStream } from 'fs';
 
 @CommandHandler(TransformFileCommand)
 export class TransformFileHandler
@@ -17,7 +15,7 @@ export class TransformFileHandler
   private readonly logger = new Logger(TransformFileCommand.name);
   async execute(command: TransformFileCommand) {
     this.logger.log(`[${this.execute.name}] :: INIT`);
-    const { processId, file, format } = command;
+    const { processId, file, format, callbackUrl } = command;
     const workbook = new Excel.Workbook();
     await workbook.xlsx.readFile(file.path);
     const worksheet = workbook.getWorksheet(1);
@@ -57,7 +55,7 @@ export class TransformFileHandler
       }
     });
     this.eventBus.publish(
-      new TransformedFileEvent({ ...file, processId }, data),
+      new TransformedFileEvent({ ...file, processId }, data, callbackUrl),
     );
     return data;
   }

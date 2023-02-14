@@ -9,6 +9,7 @@ import { UploadedFileHandler } from './application/commands/handlers/uploaded-fi
 import { EventProviders } from './application/events/events.provider';
 import { GetFileStatusController } from './controllers/query/get-file-status.controller';
 import { QueryProviders } from './application/queries/query.provider';
+import { HttpModule } from '@nestjs/axios';
 
 const CommandHandlers = [TransformFileHandler];
 const EventHandlers = [UploadedFileHandler];
@@ -20,6 +21,7 @@ const EventHandlers = [UploadedFileHandler];
       dest: process.env.PWD + '/uploads',
     }),
     MongoConnectionModule,
+    HttpModule,
     //EventStoreModule.forFeature(),
   ],
   controllers: [UploadFilesController, GetFileStatusController],

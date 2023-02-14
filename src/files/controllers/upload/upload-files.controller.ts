@@ -9,6 +9,7 @@ import {
   Logger,
   UsePipes,
   UseGuards,
+  UseFilters,
 } from '@nestjs/common';
 import { CommandBus, EventBus } from '@nestjs/cqrs';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -19,8 +20,10 @@ import { v4 as uuidv4 } from 'uuid';
 import { fileDto } from '../../domain/dtos/file.dto';
 import { UploadedFileEvent } from '../../application/commands/impl/uploaded-file.command';
 import { UploadFilesValidator } from './upload-files-validator.pipe';
-import { ResponseError, UploadFilesResponse } from './upload-files.response';
+import { UploadFilesResponse } from './upload-files.response';
 import { AppKeyGuard } from 'src/shared/infraestructure/auth/AppKeyGuard';
+import { HttpExceptionFilter } from 'src/shared/infraestructure/http/http-exception-filters';
+import { ResponseError } from 'src/shared/infraestructure/http/http-error.response';
 @Controller('files')
 @ApiTags('Files')
 export class UploadFilesController {
@@ -31,6 +34,7 @@ export class UploadFilesController {
   ) {}
 
   @UsePipes(new UploadFilesValidator())
+  @UseFilters(HttpExceptionFilter)
   @ApiResponse({
     status: 201,
     description: 'Upload process started',
@@ -44,6 +48,11 @@ export class UploadFilesController {
   @ApiResponse({
     status: 400,
     description: 'Bad request',
+    type: ResponseError,
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Unauthorized',
     type: ResponseError,
   })
   @ApiHeaders([{ name: 'x-app-key', description: 'APP KEY' }])
@@ -70,7 +79,7 @@ export class UploadFilesController {
       new UploadedFileEvent({ ...file, processId }),
     );
     this.commandBus.execute(
-      new TransformFileCommand(processId, file, body.format),
+      new TransformFileCommand(processId, file, body.format, body.callbackUrl),
     );
     this.logger.log(`[${this.upload.name}] FINISH ::`);
     response.processId = processId;

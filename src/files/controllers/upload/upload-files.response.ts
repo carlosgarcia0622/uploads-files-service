@@ -10,12 +10,3 @@ export class UploadFilesResponse {
   @ApiProperty({ format: 'binary', type: 'string' })
   processId: string;
 }
-
-export class ResponseError {
-  @ApiProperty({ type: 'string' })
-  message;
-  @ApiProperty({ type: 'number' })
-  statusCode;
-  @ApiProperty({ type: 'string' })
-  error;
-}

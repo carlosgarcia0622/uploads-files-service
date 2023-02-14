@@ -1,5 +1,9 @@
+import { ApiProperty } from '@nestjs/swagger';
+
 export class FileErrorDto {
+  @ApiProperty()
   error: string;
+  @ApiProperty()
   cell?: string;
 }
 export class fileDto {

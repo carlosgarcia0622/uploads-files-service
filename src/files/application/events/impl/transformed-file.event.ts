@@ -4,5 +4,6 @@ export class TransformedFileEvent implements IEvent {
   constructor(
     public readonly file: fileDto,
     public readonly transformedFile: Array<any>,
+    public readonly callbackUrl: string,
   ) {}
 }

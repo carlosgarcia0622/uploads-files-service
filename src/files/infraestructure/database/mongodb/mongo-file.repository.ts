@@ -33,7 +33,6 @@ export class MongoFileRepository implements IFileRepository {
       $project: {
         processId: 1,
         status: 1,
-        path: 1,
         errors: {
           $slice: ['$errors', (page - 1) * limit, limit],
         },
@@ -46,7 +45,9 @@ export class MongoFileRepository implements IFileRepository {
     };
     data.push(match);
     //return this.fileModel.findOne({ processId });
-    return this.fileModel.aggregate([match, project]);
+    const file = await this.fileModel.aggregate([match, project]);
+    if (file && file.length) return file[0];
+    return {};
   }
 
   async updateStatus(processId: string, status: string): Promise<void> {

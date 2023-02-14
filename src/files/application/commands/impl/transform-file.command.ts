@@ -6,5 +6,6 @@ export class TransformFileCommand implements ICommand {
     public readonly processId: string,
     public readonly file: fileDto,
     public readonly format: string,
+    public readonly callbackUrl: string,
   ) {}
 }

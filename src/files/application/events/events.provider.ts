@@ -2,6 +2,8 @@ import { MongoFileRepository } from 'src/files/infraestructure/database/mongodb/
 import { FileErrorFoundHandler } from './handlers/file-error-found.handler';
 import { UploadedFileHandler } from '../commands/handlers/uploaded-file.handlers';
 import { TransformedFileHandler } from './handlers/transformed-file.handler';
+import { HttpClient } from 'src/shared/infraestructure/http/http-client.service';
+import { HttpService } from '@nestjs/axios';
 
 export const EventProviders = [
   {
@@ -16,7 +18,8 @@ export const EventProviders = [
   },
   {
     provide: TransformedFileHandler,
-    inject: [MongoFileRepository],
-    useFactory: (repository) => new TransformedFileHandler(repository),
+    inject: [MongoFileRepository, HttpService],
+    useFactory: (repository, httpService) =>
+      new TransformedFileHandler(repository, new HttpClient(httpService)),
   },
 ];
