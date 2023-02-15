@@ -6,6 +6,12 @@
 
 This is an application built with NestJS that uses large-scale distributed microservice-based architectures like Domain-Driven Design ([DDD](https://martinfowler.com/bliki/DomainDrivenDesign.html)), Command Query Responsibility Segregation ([CQRS](https://martinfowler.com/bliki/CQRS.html)), and [event sourcing](https://martinfowler.com/eaaDev/EventSourcing.html). The application allows users to upload Excel (xlsx) files and process them based on a predefined mapping format. (At the moment there isn't a event store configured, but the application is ready to store all the events in a secont version). 
 
+## Why These Architectures?
+
+The decision to use a microservice architecture based on DDD, CQRS, and Event Sourcing was made to promote modularity, maintainability, and scalability. These architectures provide clear boundaries between different contexts, making it easier to maintain and test the application.
+
+NestJS was chosen as the framework for building the application due to its extensive tooling, ease of use, and support for these architectures. NestJS also provides a robust platform for building microservices, with support for message brokers, load balancing, and scaling. It was chosen over Express due to its better support for building complex applications and its seamless integration with TypeScript.
+
 ##  Dependency Table
 
 | Name        | Version           |
@@ -26,13 +32,6 @@ $ npm install
 # development
 $ docker-compose up
 ```
-
-## Why These Architectures?
-
-The decision to use a microservice architecture based on DDD, CQRS, and Event Sourcing was made to promote modularity, maintainability, and scalability. These architectures provide clear boundaries between different contexts, making it easier to maintain and test the application.
-
-NestJS was chosen as the framework for building the application due to its extensive tooling, ease of use, and support for these architectures. NestJS also provides a robust platform for building microservices, with support for message brokers, load balancing, and scaling. It was chosen over Express due to its better support for building complex applications and its seamless integration with TypeScript.
-
 ## Configuration
 
 create .env file in the project root. You can use de .env.example values
