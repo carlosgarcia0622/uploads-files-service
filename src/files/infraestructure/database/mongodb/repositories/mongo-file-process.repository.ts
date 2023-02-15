@@ -7,7 +7,10 @@ import {
   FileErrorDto,
 } from 'src/files/domain/dtos/file-process.dto';
 import { IFileProcessRepository } from 'src/files/domain/file-process-repository.interface';
-import { FileProcess, FileProcessesDocument } from '../schemas/file-processes.schema';
+import {
+  FileProcess,
+  FileProcessesDocument,
+} from '../schemas/file-processes.schema';
 
 export class MongoFileProcessRepository implements IFileProcessRepository {
   private logger = new Logger(MongoFileProcessRepository.name);
