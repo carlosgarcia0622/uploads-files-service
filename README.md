@@ -27,6 +27,21 @@ $ npm install
 $ docker-compose up
 ```
 
+## Why These Architectures?
+
+The decision to use a microservice architecture based on DDD, CQRS, and Event Sourcing was made to promote modularity, maintainability, and scalability. These architectures provide clear boundaries between different contexts, making it easier to maintain and test the application.
+
+NestJS was chosen as the framework for building the application due to its extensive tooling, ease of use, and support for these architectures. NestJS also provides a robust platform for building microservices, with support for message brokers, load balancing, and scaling. It was chosen over Express due to its better support for building complex applications and its seamless integration with TypeScript.
+
+## Configuration
+
+create .env file in the project root. You can use de .env.example values
+
+## Running the app
+ 
+```bash
+# development
+$ npm run start
 ## Running the app
 
 ```bash
@@ -47,11 +62,18 @@ $ npm run test
 $ npm run test:cov
 ```
 
-## Why These Architectures?
+## Api docs
+Once the app is running open your browser and navigate to
+```
+http://localhost:3030/docs
 
-The decision to use a microservice architecture based on DDD, CQRS, and Event Sourcing was made to promote modularity, maintainability, and scalability. These architectures provide clear boundaries between different contexts, making it easier to maintain and test the application.
+```
 
-NestJS was chosen as the framework for building the application due to its extensive tooling, ease of use, and support for these architectures. NestJS also provides a robust platform for building microservices, with support for message brokers, load balancing, and scaling. It was chosen over Express due to its better support for building complex applications and its seamless integration with TypeScript.
+the port :3030 and /docs path depends on your .env 
+
+There you will find the services docs. once in swagger expand the api you want to test and click on try it out to set the api elements and send the request
+
+
 ## Stay in touch
 
 - Author - [Carlos García](carlosgarcia0622@gmail.com)
