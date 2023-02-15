@@ -1,12 +1,12 @@
 import { Inject, Logger } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { MongoDBConstants } from 'src/database/mongo.constants';
-import { fileStatusConstants } from 'src/files/domain/constants/file-status.constants';
+import { fileStatusConstants } from 'src/contexts/files/domain/constants/file-status.constants';
 import {
   FileProcessDto,
   FileErrorDto,
-} from 'src/files/domain/dtos/file-process.dto';
-import { IFileProcessRepository } from 'src/files/domain/file-process-repository.interface';
+} from 'src/contexts/files/domain/dtos/file-process.dto';
+import { IFileProcessRepository } from 'src/contexts/files/domain/file-process-repository.interface';
 import {
   FileProcess,
   FileProcessesDocument,

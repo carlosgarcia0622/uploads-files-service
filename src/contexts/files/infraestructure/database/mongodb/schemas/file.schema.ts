@@ -1,5 +1,5 @@
 import * as mongoose from 'mongoose';
-import { FileDto } from 'src/files/domain/dtos/file.dto';
+import { FileDto } from 'src/contexts/files/domain/dtos/file.dto';
 
 export type File = Required<FileDto>;
 

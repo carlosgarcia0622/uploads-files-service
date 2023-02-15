@@ -1,6 +1,6 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
-import { FileProcessDto } from 'src/files/domain/dtos/file-process.dto';
-import { IFileProcessRepository } from 'src/files/domain/file-process-repository.interface';
+import { FileProcessDto } from 'src/contexts/files/domain/dtos/file-process.dto';
+import { IFileProcessRepository } from 'src/contexts/files/domain/file-process-repository.interface';
 import { GetProcessStatusQuery } from '../impl/get-process-status.query';
 
 @QueryHandler(GetProcessStatusQuery)

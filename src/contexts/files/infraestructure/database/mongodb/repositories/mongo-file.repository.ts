@@ -1,7 +1,7 @@
 import { Inject, Logger } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { MongoDBConstants } from 'src/database/mongo.constants';
-import { IFileRepository } from 'src/files/domain/file-repository.interface';
+import { IFileRepository } from 'src/contexts/files/domain/file-repository.interface';
 import { FileDocument } from '../schemas/file.schema';
 import { MongoFileProcessRepository } from './mongo-file-process.repository';
 

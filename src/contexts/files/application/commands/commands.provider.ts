@@ -1,5 +1,5 @@
 import { EventBus } from '@nestjs/cqrs';
-import { ExcelJsReader } from 'src/files/infraestructure/exceljs-file-reader';
+import { ExcelJsReader } from 'src/contexts/files/infraestructure/exceljs-file-reader';
 import { TransformFileHandler } from './handlers/transform-file.handler';
 
 export const CommandsProvider = [

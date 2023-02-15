@@ -1,8 +1,8 @@
 import { Logger } from '@nestjs/common';
 import { CommandHandler, EventBus, ICommandHandler } from '@nestjs/cqrs';
 import { TransformFileCommand } from '../impl/transform-file.command';
-import { TransformedFileEvent } from 'src/files/application/events/impl/transformed-file.event';
-import { IFileReader } from 'src/files/domain/file-reader.interface';
+import { TransformedFileEvent } from 'src/contexts/files/application/events/impl/transformed-file.event';
+import { IFileReader } from 'src/contexts/files/domain/file-reader.interface';
 
 @CommandHandler(TransformFileCommand)
 export class TransformFileHandler

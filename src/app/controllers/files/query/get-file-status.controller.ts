@@ -8,7 +8,7 @@ import {
 } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
 import { ApiHeaders, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { GetProcessStatusQuery } from 'src/files/application/queries/impl/get-process-status.query';
+import { GetProcessStatusQuery } from 'src/contexts/files/application/queries/impl/get-process-status.query';
 import { ApiKeyGuard } from 'src/shared/infraestructure/auth/api-key.guard';
 import { ResponseError } from 'src/shared/infraestructure/http/http-error.response';
 import { GetFileStatusRequest } from './get-file-status.request';

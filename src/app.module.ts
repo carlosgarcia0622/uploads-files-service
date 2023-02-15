@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { FilesModule } from './files/files.module';
+import { FilesModule } from './contexts/files/files.module';
 
 @Module({
   imports: [ConfigModule.forRoot(), FilesModule],

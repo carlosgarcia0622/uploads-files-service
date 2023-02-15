@@ -1,4 +1,4 @@
-import { MongoFileProcessRepository } from 'src/files/infraestructure/database/mongodb/repositories/mongo-file-process.repository';
+import { MongoFileProcessRepository } from 'src/contexts/files/infraestructure/database/mongodb/repositories/mongo-file-process.repository';
 import { GetProcessStatusHandler } from './handlers/get-process-status.handler';
 
 export const QueryProviders = [
