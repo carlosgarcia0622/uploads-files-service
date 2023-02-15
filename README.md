@@ -34,15 +34,10 @@ $ docker-compose up
 ```
 ## Configuration
 
-create .env file in the project root. You can use de .env.example values
+create .env file in the project root. You can use the .env.example values
 
 ## Running the app
  
-```bash
-# development
-$ npm run start
-## Running the app
-
 ```bash
 # development
 $ npm run start
@@ -70,13 +65,13 @@ http://localhost:3030/docs
 
 the port :3030 and /docs path depends on your .env 
 
-There you will find the services docs. once in swagger expand the api you want to test and click on try it out to set the api elements and send the request
-
+There you will find the services docs. once in swagger expand the api you want to test and click on "try it out", add api required data and send the request.
+.
 
 ## Stay in touch
 
 - Author - [Carlos García](carlosgarcia0622@gmail.com)
-- linkedIn - [https://www.linkedin.com/in/carlos-andr%C3%A9s-garc%C3%ADa-montoya-a35b8a121/](https://www.linkedin.com/in/carlos-andr%C3%A9s-garc%C3%ADa-montoya-a35b8a121/)
+- [linkedIn](https://www.linkedin.com/in/carlos-andr%C3%A9s-garc%C3%ADa-montoya-a35b8a121/)
 
 ## License
 
