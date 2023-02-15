@@ -1,10 +1,10 @@
 import * as mongoose from 'mongoose';
-import { fileStatusConstants } from '../../../domain/constants/file-status.constants';
-import { fileDto } from '../../../domain/dtos/file.dto';
+import { fileStatusConstants } from '../../../../domain/constants/file-status.constants';
+import { FileProcessDto } from '../../../../domain/dtos/file-process.dto';
 
-export type File = Required<fileDto>;
+export type FileProcess = Required<FileProcessDto>;
 
-export type FileDocument = File & mongoose.Document;
+export type FileProcessesDocument = FileProcess & mongoose.Document;
 
 const schemaDefinition = {
   processId: { type: String, required: true, index: true },
@@ -31,6 +31,6 @@ const schemaDefinition = {
   ],
 };
 
-export const FileSchema = new mongoose.Schema(schemaDefinition, {
+export const FilesProcessesSchema = new mongoose.Schema(schemaDefinition, {
   timestamps: true,
 });

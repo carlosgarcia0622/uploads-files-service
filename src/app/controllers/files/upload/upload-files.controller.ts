@@ -14,11 +14,11 @@ import {
 import { CommandBus, EventBus } from '@nestjs/cqrs';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiConsumes, ApiHeaders, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { TransformFileCommand } from '../../application/commands/impl/transform-file.command';
+import { TransformFileCommand } from '../../../../files/application/commands/impl/transform-file.command';
 import { UploadFilesRequest } from './upload-files.request';
 import { v4 as uuidv4 } from 'uuid';
-import { fileDto } from '../../domain/dtos/file.dto';
-import { UploadedFileEvent } from '../../application/commands/impl/uploaded-file.command';
+import { FileProcessDto } from '../../../../files/domain/dtos/file-process.dto';
+import { UploadedFileEvent } from '../../../../files/application/commands/impl/uploaded-file.command';
 import { UploadFilesValidator } from './upload-files-validator.pipe';
 import { UploadFilesResponse } from './upload-files.response';
 import { ApiKeyGuard } from 'src/shared/infraestructure/auth/api-key.guard';
@@ -70,7 +70,7 @@ export class UploadFilesController {
           errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY,
         }),
     )
-    file: fileDto,
+    file: FileProcessDto,
   ) {
     this.logger.log(`[${this.upload.name}] INIT :: }`);
     const processId = uuidv4();

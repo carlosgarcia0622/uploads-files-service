@@ -2,19 +2,23 @@ import { Inject, Logger } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { MongoDBConstants } from 'src/database/mongo.constants';
 import { fileStatusConstants } from 'src/files/domain/constants/file-status.constants';
-import { fileDto, FileErrorDto } from 'src/files/domain/dtos/file.dto';
-import { IFileRepository } from 'src/files/domain/file-repository.interface';
-import { File, FileDocument } from './file.schema';
+import {
+  FileProcessDto,
+  FileErrorDto,
+} from 'src/files/domain/dtos/file-process.dto';
+import { IFileProcessRepository } from 'src/files/domain/file-process-repository.interface';
+import { FileProcess, FileProcessesDocument } from '../schemas/file-processes.schema';
 
-export class MongoFileRepository implements IFileRepository {
-  private logger = new Logger(MongoFileRepository.name);
+export class MongoFileProcessRepository implements IFileProcessRepository {
+  private logger = new Logger(MongoFileProcessRepository.name);
   constructor(
-    @Inject(MongoDBConstants.FILE_MODEL) private fileModel: Model<FileDocument>,
+    @Inject(MongoDBConstants.FILE_PROCESS_MODEL)
+    private fileModel: Model<FileProcessesDocument>,
   ) {}
 
-  async create(file: fileDto): Promise<File> {
+  async create(fileProcess: FileProcessDto): Promise<FileProcess> {
     this.logger.log(`[${this.create.name}] :: INIT`);
-    const createdFile = await this.fileModel.create(file);
+    const createdFile = await this.fileModel.create(fileProcess);
     return createdFile;
   }
 

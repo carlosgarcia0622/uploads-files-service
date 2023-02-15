@@ -15,15 +15,15 @@ export class TransformFileHandler
   private readonly logger = new Logger(TransformFileCommand.name);
   async execute(command: TransformFileCommand): Promise<void> {
     this.logger.log(`[${this.execute.name}] :: INIT`);
-    const { processId, file, format, callbackUrl } = command;
+    const { processId, fileProcess, format, callbackUrl } = command;
     const transformedFile = await this.fileReader.fileToJson(
-      file.path,
+      fileProcess.path,
       format,
       processId,
     );
     this.eventBus.publish(
       new TransformedFileEvent(
-        { ...file, processId },
+        { ...fileProcess, processId },
         transformedFile,
         callbackUrl,
       ),

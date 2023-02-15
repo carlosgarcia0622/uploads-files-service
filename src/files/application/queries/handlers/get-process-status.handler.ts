@@ -1,15 +1,15 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
-import { fileDto } from 'src/files/domain/dtos/file.dto';
-import { IFileRepository } from 'src/files/domain/file-repository.interface';
+import { FileProcessDto } from 'src/files/domain/dtos/file-process.dto';
+import { IFileProcessRepository } from 'src/files/domain/file-process-repository.interface';
 import { GetProcessStatusQuery } from '../impl/get-process-status.query';
 
 @QueryHandler(GetProcessStatusQuery)
 export class GetProcessStatusHandler
   implements IQueryHandler<GetProcessStatusQuery>
 {
-  constructor(private readonly repository: IFileRepository) {}
+  constructor(private readonly repository: IFileProcessRepository) {}
 
-  execute(query: GetProcessStatusQuery): Promise<fileDto> {
+  execute(query: GetProcessStatusQuery): Promise<FileProcessDto> {
     const { processId, page, limit } = query;
     return this.repository.findByProcessId(
       processId,

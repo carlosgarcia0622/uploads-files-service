@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { FileErrorDto } from 'src/files/domain/dtos/file.dto';
+import { FileErrorDto } from 'src/files/domain/dtos/file-process.dto';
 
 export class GetFileStatusResponse {
   @ApiProperty({

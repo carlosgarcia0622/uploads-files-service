@@ -1,5 +1,5 @@
 import { ICommand } from '@nestjs/cqrs';
-import { fileDto } from 'src/files/domain/dtos/file.dto';
+import { FileProcessDto } from 'src/files/domain/dtos/file-process.dto';
 export class UploadedFileEvent implements ICommand {
-  constructor(public readonly file: fileDto) {}
+  constructor(public readonly fileProcess: FileProcessDto) {}
 }

@@ -1,6 +1,6 @@
 import { IFileReader } from '../domain/file-reader.interface';
 import * as Excel from 'exceljs';
-import { FileErrorDto } from '../domain/dtos/file.dto';
+import { FileErrorDto } from '../domain/dtos/file-process.dto';
 import { EventBus } from '@nestjs/cqrs';
 import { FileErrorFoundEvent } from '../application/events/impl/file-error-found.event';
 
@@ -46,7 +46,7 @@ export class ExcelJsReader implements IFileReader {
         data.push(rowData);
       }
     });
-    return null;
+    return data;
   }
 
   private async getWorksheet(path: string, worksheetNumber = 1): Promise<any> {

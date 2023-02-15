@@ -1,10 +1,10 @@
 import { ICommand } from '@nestjs/cqrs';
-import { fileDto } from 'src/files/domain/dtos/file.dto';
+import { FileProcessDto } from 'src/files/domain/dtos/file-process.dto';
 
 export class TransformFileCommand implements ICommand {
   constructor(
     public readonly processId: string,
-    public readonly file: fileDto,
+    public readonly fileProcess: FileProcessDto,
     public readonly format: string,
     public readonly callbackUrl: string,
   ) {}

@@ -1,11 +1,11 @@
 import { Logger } from '@nestjs/common';
 import { writeFile } from 'fs';
-import { FileErrorDto } from '../domain/dtos/file.dto';
-import { IFileRepository } from '../domain/file-repository.interface';
+import { FileErrorDto } from '../domain/dtos/file-process.dto';
+import { IFileProcessRepository } from '../domain/file-process-repository.interface';
 import { IFileWriter } from '../domain/file-writer.interface';
 
 export class FsFileWriter implements IFileWriter {
-  constructor(private readonly repository: IFileRepository) {}
+  constructor(private readonly repository: IFileProcessRepository) {}
   private readonly logger = new Logger(FsFileWriter.name);
   async writeFile(path: string, file: any, processId: string): Promise<void> {
     writeFile(path, JSON.stringify(file), (err) => {
