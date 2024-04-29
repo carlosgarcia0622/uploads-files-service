@@ -1,0 +1,11 @@
+name: CI/CD uploads-files-services
+
+on:
+  push:
+    branches: ["develop", "preproduction", "main"]
+  workflow_dispatch:
+    inputs:
+      name:
+        description: 'Manual workflow dispatch'
+        required: true
+        default: 'Reason to run the workflow'
