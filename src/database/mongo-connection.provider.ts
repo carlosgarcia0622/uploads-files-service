@@ -8,7 +8,7 @@ export const mongoConnectionProviders = [
   {
     provide: MONGO_DATA_BASE_CONNECTION,
     useFactory: (): Promise<typeof mongoose> =>
-      mongoose.connect('mongodb://localhost:27017/files'),
+      mongoose.connect('mongodb://mongodb:27017/files'),
     imports: [ConfigModule],
   },
 ];

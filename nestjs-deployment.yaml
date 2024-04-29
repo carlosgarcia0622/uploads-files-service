@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: upload-files-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: upload-files-service
+  template:
+    metadata:
+      labels:
+        app: upload-files-service
+    spec:
+      containers:
+      - name: upload-files-service
+        image: carlosgarcia0622/upload-files-service:latest
+        ports:
+        - containerPort: 3030
+        env:
+        - name: DB_HOST
+          value: "mongodb"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: upload-files-service
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 3030
+    targetPort: 3030
+  selector:
+    app: upload-files-service
