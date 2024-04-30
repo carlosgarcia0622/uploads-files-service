@@ -19,6 +19,7 @@ env:
   GCP_PROJECT_ID: eafit-415821
   GKE_CLUSTER: uploads-files-service-cluster
   GKE_ZONE: us-central1-c
+  MONGO_CONNECTION: ${{secrets.MONGO_CONNECTION}}
 
   ASPNETCORE_ENVIRONMENT: ${{ vars.ASPNETCORE_ENVIRONMENT }}
   AUTHOR: ${{ vars.AUTHOR }}
@@ -27,8 +28,8 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
-    # environment: 
-    #   name: ${{ github.ref_name }}
+      environment: 
+        name: ${{ github.ref_name }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
